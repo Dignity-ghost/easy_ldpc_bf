@@ -46,9 +46,9 @@ def convert_binary(x):
     return a
 
 
-def easy_bf(rx, H, iteration, thres=3):
+def easy_bf(rx, H, iteration):
     [M, N] = H.shape
-    rx_iter = rx
+    rx_iter = rx.copy()
     
     for iter in range(iteration):
 
@@ -59,15 +59,32 @@ def easy_bf(rx, H, iteration, thres=3):
             print("Iteration", iter+1)
             error_count = np.zeros([N])
             for row in range(N):
-                error_count[row] = H[:,row][qij].sum()
-            # max_index = np.argmax(error_count)
-            # rx_iter[max_index] = convert_binary(rx_iter[max_index])
-            for idx in range(N):
-                if error_count[idx] > thres:
-                    rx_iter[idx] = convert_binary(rx_iter[idx])
-                else:
-                    max_index = np.argmax(error_count)
-                    rx_iter[max_index] = convert_binary(rx_iter[max_index])                    
+                error_count[row] = (H[:,row][qij>0]).sum()
+            max_index = np.argmax(error_count)
+            rx_iter[max_index] = convert_binary(rx_iter[max_index])
+        else:
+            print("Decode Completeded!")
+            break
+    
+    return rx_iter
+
+
+def easy_osmlgd(rx, H, iteration):
+    [M, N] = H.shape
+    rx_iter = rx.copy()
+    
+    for iter in range(iteration):
+
+        rx_rep = np.tile(rx_iter, (M, 1))
+        qij = (H * rx_rep).sum(axis=1)
+        qij = qij % 2
+        if 1 in qij:
+            print("Iteration", iter+1)
+            for row in range(N):
+                error_count = H[:,row][qij>0].sum()
+                right_count = H[:,row][qij==0].sum()
+                if error_count >= right_count:
+                    rx_iter[row] = convert_binary(rx_iter[row])
         else:
             print("Decode Completeded!")
             break
@@ -76,15 +93,19 @@ def easy_bf(rx, H, iteration, thres=3):
 
 
 
-H_array = loadmat("./H.mat")["H"]
-tx_array = loadmat("./tx.mat")['tx']
-dx_array = loadmat('./dx.mat')['dx']
+if __name__ == "__main__":
+
+    H_array = loadmat("./H.mat")["H"]
+    tx_array = loadmat("./tx.mat")['tx']
+    dx_array = loadmat('./dx.mat')['dx']
 
 
-it = 30
-# dx_python = BitFlipDecode(tx_array[0], H_array, it)
-# print(dx_python==dx_array[0])
+    it = 10
+    dx_python = BitFlipDecode(tx_array[0], H_array, it)
+    # print(dx_python==dx_array[0])
 
-dx_python = easy_bf(tx_array[0], H_array, it)
-print(dx_python==dx_array[0])
+    dx_python = easy_bf(tx_array[0], H_array, it)
+    # print(dx_python==dx_array[0])
 
+    dx_python = easy_osmlgd(tx_array[0], H_array, it)
+    # print(dx_python==dx_array[0])
