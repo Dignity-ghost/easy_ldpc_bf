@@ -43,7 +43,7 @@ save('tx')
 disp(num1)
 
 dx = decodeBitFlip(tx, H, iter);
-[num2, rat2] = biterr(dx, u);
 save('dx')
+[num2, rat2] = biterr(dx, u);
 disp(num2)
 
