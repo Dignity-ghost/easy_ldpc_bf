@@ -38,12 +38,47 @@ def BitFlipDecode(rx, H, iteration):
     return dx
 
 
+def convert_binary(x):
+    a = x
+    a += 1
+    a = a %2
+
+    return a
+
+
+def easy_bf(rx, H, iteration):
+    [M, N] = H.shape
+    rx_iter = rx
+    
+    for iter in range(iteration):
+
+        rx_rep = np.tile(rx_iter, (M, 1))
+        qij = (H * rx_rep).sum(axis=1)
+        qij = qij % 2
+        if 1 in qij:
+            print("Iteration", iter+1)
+            error_count = np.zeros([N])
+            for row in range(N):
+                error_count[row] = H[:,row][qij].sum()
+            max_index = np.argmax(error_count)
+            rx_iter[max_index] = convert_binary(rx_iter[max_index])
+        else:
+            print("Decode Completeded!")
+            break
+    
+    return rx_iter
+
+
 
 H_array = loadmat("./H.mat")["H"]
 tx_array = loadmat("./tx.mat")['tx']
 dx_array = loadmat('./dx.mat')['dx']
 
 
-it =30
-dx_python = BitFlipDecode(tx_array[0], H_array, it)
+it = 10
+# dx_python = BitFlipDecode(tx_array[0], H_array, it)
+# print(dx_python==dx_array[0])
+
+dx_python = easy_bf(tx_array[0], H_array, it)
 print(dx_python==dx_array[0])
+
