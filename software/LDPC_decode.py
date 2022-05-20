@@ -46,7 +46,7 @@ def convert_binary(x):
     return a
 
 
-def easy_bf(rx, H, iteration):
+def easy_bf(rx, H, iteration, thres=3):
     [M, N] = H.shape
     rx_iter = rx
     
@@ -60,8 +60,14 @@ def easy_bf(rx, H, iteration):
             error_count = np.zeros([N])
             for row in range(N):
                 error_count[row] = H[:,row][qij].sum()
-            max_index = np.argmax(error_count)
-            rx_iter[max_index] = convert_binary(rx_iter[max_index])
+            # max_index = np.argmax(error_count)
+            # rx_iter[max_index] = convert_binary(rx_iter[max_index])
+            for idx in range(N):
+                if error_count[idx] > thres:
+                    rx_iter[idx] = convert_binary(rx_iter[idx])
+                else:
+                    max_index = np.argmax(error_count)
+                    rx_iter[max_index] = convert_binary(rx_iter[max_index])                    
         else:
             print("Decode Completeded!")
             break
@@ -75,7 +81,7 @@ tx_array = loadmat("./tx.mat")['tx']
 dx_array = loadmat('./dx.mat')['dx']
 
 
-it = 10
+it = 30
 # dx_python = BitFlipDecode(tx_array[0], H_array, it)
 # print(dx_python==dx_array[0])
 
