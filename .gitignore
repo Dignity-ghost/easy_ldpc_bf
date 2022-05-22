@@ -1,3 +1,11 @@
 **.mat
 **.npy
 **.ipynb
+
+__pycache__
+
+**.vcd
+**.vpd
+**.dot
+**.dot
+**.pdf
