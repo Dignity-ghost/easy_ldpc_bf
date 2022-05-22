@@ -11,7 +11,7 @@ module multibits_adder_tb();
 
 //Define parameters:
 parameter s_length = 256;
-parameter sum_bits = 8;
+parameter sum_bits = 9;
 
 //Define pins:
 reg rst_tb;
