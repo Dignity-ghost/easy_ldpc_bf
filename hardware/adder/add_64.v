@@ -1,4 +1,4 @@
-module add_64.v(a1, a2, s);
+module add_64(a1, a2, s);
 input [6:0] a1, a2;
 output wire [7:0] s;
 

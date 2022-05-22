@@ -1,0 +1,6 @@
+read_verilog ./bitsadder_256.v ./adder/add_1.v ./adder/add_2.v ./adder/add_4.v ./adder/add_8.v ./adder/add_16.v ./adder/add_32.v ./adder/add_64.v ./adder/add_128.v
+hierarchy -check -top bitsadder_256
+proc; opt; memory; opt; fsm; opt;
+show -format pdf -prefix bitsadder_256 bitsadder_256
+synth
+clean
