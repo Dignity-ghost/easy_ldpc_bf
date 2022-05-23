@@ -1702,7 +1702,7 @@ update: begin
 integer i;
 tx_buffer <= update_buffer;
 iter_cnt <= iter_cnt + 1'b1;
-if(iter_cnt >= iteration) begin
+if(iter_cnt >= iteration-2) begin
     valid_flag <= 1'b1;
     deout_reg <= tx_buffer;
     state <= decode;

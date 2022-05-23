@@ -11,7 +11,11 @@ output wire valid_tb;
 
 reg [255:0] test_in [99:0];
 reg [255:0] test_out [99:0];
- 
+reg [255:0] test_gt [99:0];
+
+wire [255:0] test_wire0;
+assign test_wire0 = test_gt[0];
+
 osmlgd_top top(.clk(clk_tb), .rst(rst_tb), .work(work_tb),
                .tx(tx_tb),
                .free(free_tb), .deout(deout_tb), .valid(valid_tb));
@@ -43,19 +47,35 @@ end
 initial begin
 $readmemb("./sim_data/test_H.dat", top.Harray, 0, 127);
 $readmemb("./sim_data/test_In.dat", test_in, 0, 99);
+$readmemb("./sim_data/test_GT.dat", test_gt, 0, 99);
 end
 
 
-initial begin
-$monitor($realtime, " free is %b and valid is %b", free_tb, valid_tb);
-$monitor($realtime, " decryption is %b", deout_tb);
-end
+// initial begin
+// $monitor($realtime, " free is %b and valid is %b", free_tb, valid_tb);
+// $monitor($realtime, " decryption is %b", deout_tb);
+// end
+
+// always@(posedge clk_tb) begin
+// if (valid_tb) begin
+//     $fwrite(fid, "%b", deout_tb);
+//     $fclose(fid);
+//     $finish;
+// end
+// end
 
 always@(posedge clk_tb) begin
 if (valid_tb) begin
-    $fwrite(fid, "%b", deout_tb);
-    $fclose(fid);
-    $finish;
+    if (test_wire0==deout_tb) begin
+        $display("one decryption passed!");
+    end
+    else begin
+        $display("gt vs out");
+        $display("%b", test_wire0[127:64]);
+        $display("%b", deout_tb[127:64]);
+        $display("%b", test_wire0[64:0]);
+        $display("%b", deout_tb[64:0]);
+    end
 end
 end
 

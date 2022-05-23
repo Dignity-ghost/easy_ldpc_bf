@@ -82,8 +82,9 @@ def easy_osmlgd(rx, H, iteration):
             print("Iteration", iter+1)
             for row in range(N):
                 error_count = H[:,row][qij>0].sum()
-                right_count = H[:,row][qij==0].sum()
-                if error_count >= right_count:
+                check_count = (H[:,row]*qij).sum()
+                check_count = (check_count >> 1)
+                if error_count >= check_count:
                     rx_iter[row] = convert_binary(rx_iter[row])
         else:
             print("Decode Completeded!")
