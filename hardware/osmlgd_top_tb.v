@@ -28,10 +28,6 @@ initial begin
     $dumpvars;
 end
 
-integer fid;
-initial begin
-fid = $fopen("./tb_out.dat", "w");
-end
 
 initial begin
 clk_tb=0;
@@ -56,6 +52,12 @@ end
 // $monitor($realtime, " decryption is %b", deout_tb);
 // end
 
+
+// integer fid;
+// initial begin
+// fid = $fopen("./tb_out.dat", "w");
+// end
+
 // always@(posedge clk_tb) begin
 // if (valid_tb) begin
 //     $fwrite(fid, "%b", deout_tb);
@@ -64,20 +66,42 @@ end
 // end
 // end
 
+// always@(posedge clk_tb) begin
+// if (valid_tb) begin
+//     if (test_wire0==deout_tb) begin
+//         $display("one decryption passed!");
+//     end
+//     else begin
+//         $display("gt vs out");
+//         $display("%b", test_wire0[127:64]);
+//         $display("%b", deout_tb[127:64]);
+//         $display("%b", test_wire0[64:0]);
+//         $display("%b", deout_tb[64:0]);
+//     end
+// end
+// end
+
 always@(posedge clk_tb) begin
 if (valid_tb) begin
-    if (test_wire0==deout_tb) begin
+    test_out[0] <= deout_tb;
+end
+end
+
+always@(posedge clk_tb) begin
+if (valid_tb) begin
+    if (test_gt[0]==test_out[0]) begin
         $display("one decryption passed!");
     end
     else begin
         $display("gt vs out");
-        $display("%b", test_wire0[127:64]);
-        $display("%b", deout_tb[127:64]);
-        $display("%b", test_wire0[64:0]);
-        $display("%b", deout_tb[64:0]);
+        $display("%b", test_gt[0][127:64]);
+        $display("%b", test_out[0][127:64]);
+        $display("%b", test_gt[0][64:0]);
+        $display("%b", test_out[0][64:0]);
     end
 end
 end
+
 
 endmodule
 
