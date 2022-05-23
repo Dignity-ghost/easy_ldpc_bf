@@ -10,7 +10,7 @@ output wire [255:0] deout_tb;
 output wire valid_tb;
 
 reg [255:0] test_in [99:0];
-reg [255:0] gt [99:0];
+reg [255:0] test_out [99:0];
  
 osmlgd_top top(.clk(clk_tb), .rst(rst_tb), .work(work_tb),
                .tx(tx_tb),
@@ -22,6 +22,11 @@ always #(CLK_PERIOD/2) clk_tb=~clk_tb;
 initial begin
     $dumpfile("osmlgd_top.vcd");
     $dumpvars;
+end
+
+integer fid;
+initial begin
+fid = $fopen("./tb_out.dat", "w");
 end
 
 initial begin
@@ -38,7 +43,6 @@ end
 initial begin
 $readmemb("./sim_data/test_H.dat", top.Harray, 0, 127);
 $readmemb("./sim_data/test_In.dat", test_in, 0, 99);
-$readmemb("./sim_data/test_GT.dat", test_in, 0, 99);
 end
 
 
@@ -47,6 +51,13 @@ $monitor($realtime, " free is %b and valid is %b", free_tb, valid_tb);
 $monitor($realtime, " decryption is %b", deout_tb);
 end
 
+always@(posedge clk_tb) begin
+if (valid_tb) begin
+    $fwrite(fid, "%b", deout_tb);
+    $fclose(fid);
+    $finish;
+end
+end
 
 endmodule
 
