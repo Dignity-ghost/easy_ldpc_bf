@@ -1120,6 +1120,7 @@ getin: begin
 if(work) begin
     tx_buffer <= tx;
     update_buffer <= tx;
+    form_array <= 'd0;
     free_flag <= 1'b0;
     valid_flag <= 1'b0;
     iter_flag <= 1'b1;
