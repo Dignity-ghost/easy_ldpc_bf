@@ -1,0 +1,5 @@
+read_verilog ./osmlgd_top.v ./bitsadder_256.v ./bitsadder_128.v ./adder/add_1.v ./adder/add_2.v ./adder/add_4.v ./adder/add_8.v ./adder/add_16.v ./adder/add_32.v ./adder/add_64.v ./adder/add_128.v
+# hierarchy -check -top osmlgd_top
+# proc; opt; memory; opt; fsm; opt;
+synth
+clean
