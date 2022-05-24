@@ -1,4 +1,4 @@
-`timescale 1ns/1ps
+`timescale 1ps/1ps
 
 module osmlgd_top_tb();
 reg clk_tb;
@@ -13,14 +13,18 @@ reg [255:0] test_in [99:0];
 reg [255:0] test_out [99:0];
 reg [255:0] test_gt [99:0];
 
-wire [255:0] test_wire0;
-assign test_wire0 = test_gt[0];
+reg [7:0] trial_cnt;
+reg [7:0] trial;
+
+reg tb_done;
+reg [7:0] check_cnt;
+reg [7:0] right_cnt;
 
 osmlgd_top top(.clk(clk_tb), .rst(rst_tb), .work(work_tb),
                .tx(tx_tb),
                .free(free_tb), .deout(deout_tb), .valid(valid_tb));
 
-localparam CLK_PERIOD = 10;
+localparam CLK_PERIOD = 2;
 always #(CLK_PERIOD/2) clk_tb=~clk_tb;
 
 initial begin
@@ -33,11 +37,16 @@ initial begin
 clk_tb=0;
 rst_tb=0;
 work_tb=0;
+trial_cnt=0;
+tb_done=0;
+trial=100;
+check_cnt=0;
+right_cnt=0;
 #10 rst_tb=1;
-#15 work_tb=1;
+#40 work_tb=1;
 tx_tb=test_in[0];
-#10 work_tb=0;
-#120 $finish;
+// #300 $finish;
+#15000 $finish;
 end
 
 initial begin
@@ -66,42 +75,76 @@ end
 // end
 // end
 
+
+
 // always@(posedge clk_tb) begin
 // if (valid_tb) begin
-//     if (test_wire0==deout_tb) begin
+//     test_out[0] <= deout_tb;
+// end
+// end
+
+// always@(posedge clk_tb) begin
+// if (valid_tb) begin
+//     if (test_gt[0]==test_out[0]) begin
 //         $display("one decryption passed!");
 //     end
 //     else begin
 //         $display("gt vs out");
-//         $display("%b", test_wire0[127:64]);
-//         $display("%b", deout_tb[127:64]);
-//         $display("%b", test_wire0[64:0]);
-//         $display("%b", deout_tb[64:0]);
+//         $display("%b", test_gt[0][127:64]);
+//         $display("%b", test_out[0][127:64]);
+//         $display("%b", test_gt[0][64:0]);
+//         $display("%b", test_out[0][64:0]);
 //     end
 // end
 // end
 
 always@(posedge clk_tb) begin
+
+
 if (valid_tb) begin
-    test_out[0] <= deout_tb;
+test_out[trial_cnt-1] <= deout_tb;
+work_tb <= 1'b1;
+// tx_tb <= test_in[trial_cnt];
 end
+
+if (free_tb) begin
+    if (work_tb) begin
+    if (trial_cnt<'d100) begin
+        trial_cnt <= trial_cnt + 1;
+        tx_tb <= test_in[trial_cnt];
+    end
+    end
 end
+
+if (work_tb) begin
+work_tb <= 1'b0;
+end
+
+
+if (trial_cnt>='d100) begin
+tb_done <= 1'b1;
+end
+
+
+end
+
+
+integer fid;
+initial begin
+fid = $fopen("./tb_out.dat", "w");
+end
+
 
 always@(posedge clk_tb) begin
-if (valid_tb) begin
-    if (test_gt[0]==test_out[0]) begin
-        $display("one decryption passed!");
+if (tb_done) begin
+    if (check_cnt<100) begin
+        if (test_gt[check_cnt]==test_out[check_cnt]) begin right_cnt<=right_cnt+1; end
+        check_cnt<=check_cnt+1;
+        $fwrite(fid, "%b\n", test_out[check_cnt]);
     end
-    else begin
-        $display("gt vs out");
-        $display("%b", test_gt[0][127:64]);
-        $display("%b", test_out[0][127:64]);
-        $display("%b", test_gt[0][64:0]);
-        $display("%b", test_out[0][64:0]);
-    end
+    else begin $display($realtime, "  TestBench Finished! Correct Rate is %d%%", right_cnt); $fclose(fid); $finish; end
 end
 end
-
 
 endmodule
 
