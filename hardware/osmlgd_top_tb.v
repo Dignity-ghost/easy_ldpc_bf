@@ -45,20 +45,19 @@ trial=100;
 check_cnt=0;
 right_cnt=0;
 #10 rst_tb=1;
-#30 ;
-// #40 work_tb=1;
-// tx_tb=test_in[0];
+// #30 ;
+#40 work_tb=1;
+tx_tb=test_in[0];
+// for (x=0;x<100;x=x+1) begin
+// #800 work_tb=1;
+// trial_cnt=x;
+// tx_tb=test_in[trial_cnt];
 // #2 work_tb=0;
-for (x=0;x<100;x=x+1) begin
-#800 work_tb=1;
-trial_cnt=x;
-tx_tb=test_in[trial_cnt];
-#2 work_tb=0;
-end
-#800 trial_cnt=100;
-tb_done=1;
-#1000 $finish;
-// #80000 $finish;
+// end
+// #800 trial_cnt=100;
+// tb_done=1;
+// #600 $finish;
+#20000 $finish;
 end
 
 initial begin
@@ -111,79 +110,52 @@ end
 // end
 
 
-
-
-// always@(posedge clk_tb) begin
-
-// if (valid_tb) begin
-// test_out[trial_cnt-1] <= deout_tb;
-// work_tb <= 1'b1;
-// // tx_tb <= test_in[trial_cnt];
-// end
-
-// if (free_tb) begin
-//     if (work_tb) begin
-//     if (trial_cnt<'d100) begin
-//         trial_cnt <= trial_cnt + 1;
-//         tx_tb <= test_in[trial_cnt];
-//     end
-//     end
-// end
-
-// if (work_tb) begin
-// work_tb <= 1'b0;
-// end
-
-
-// if (trial_cnt>='d100) begin
-// tb_done <= 1'b1;
-// end
-
-
-// end
-
-
-// integer fid;
 // initial begin
-// fid = $fopen("./tb_out.dat", "w");
+// $monitor($realtime, " cnt is %d done is %b", trial_cnt, tb_done);
 // end
 
+always@(posedge clk_tb) begin
 
-// always@(posedge clk_tb) begin
-
-// if (work_tb) begin
-// work_tb <= 1'b0;
-// end
-
-// if (trial_cnt>='d100) begin
-// tb_done <= 1'b1;
-// end
-
-
-// if (tb_done) begin
-//     if (check_cnt<100) begin
-//         if (test_gt[check_cnt]==test_out[check_cnt]) begin right_cnt<=right_cnt+1; end
-//         check_cnt<=check_cnt+1;
-//         $fwrite(fid, "%b\n", test_out[check_cnt]);
-//     end
-//     else begin $display($realtime, "  TestBench Finished! Correct Rate is %d%%", right_cnt); $fclose(fid); $finish; end
-// end
-// end
+if (valid_tb) begin
+test_out[trial_cnt] <= deout_tb;
+work_tb <= 1'b1;
+if (trial_cnt<'d99) begin
+    trial_cnt <= trial_cnt + 1;
+    tx_tb <= test_in[trial_cnt+1];
+end
+// tx_tb <= test_in[trial_cnt];
+end
 
 
-// initial begin
-// $monitor($realtime, " cnt is %d right is %d", check_cnt, right_cnt);
-// end
+if (work_tb) begin
+work_tb <= 1'b0;
+end
+
+
+if (trial_cnt>='d100) begin
+tb_done <= 1'b1;
+end
+
+
+end
+
 
 integer fid;
 initial begin
 fid = $fopen("./tb_out.dat", "w");
 end
 
+
 always@(posedge clk_tb) begin
-if (valid_tb) begin
-test_out[trial_cnt] <= deout_tb;
+
+if (work_tb) begin
+work_tb <= 1'b0;
 end
+
+if (trial_cnt>='d99) begin
+if (valid_tb) begin tb_done <= 1'b1; end
+end
+
 
 if (tb_done) begin
     if (check_cnt<100) begin
@@ -193,9 +165,34 @@ if (tb_done) begin
     end
     else begin $display($realtime, "  TestBench Finished! Correct Rate is %d%%", right_cnt); $fclose(fid); $finish; end
 end
-
-
 end
+
+
+// initial begin
+// $monitor($realtime, " cnt is %d right is %d", check_cnt, right_cnt);
+// end
+
+// integer fid;
+// initial begin
+// fid = $fopen("./tb_out.dat", "w");
+// end
+
+// always@(posedge clk_tb) begin
+// if (valid_tb) begin
+// test_out[trial_cnt] <= deout_tb;
+// end
+
+// if (tb_done) begin
+//     if (check_cnt<100) begin
+//         if (test_gt[check_cnt]==test_out[check_cnt]) begin right_cnt<=right_cnt+1; end
+//         check_cnt<=check_cnt+1;
+//         $fwrite(fid, "%b\n", test_out[check_cnt]);
+//     end
+//     else begin $display($realtime, "  TestBench Finished! Correct Rate is %d%%", right_cnt); $fclose(fid); $finish; end
+// end
+
+
+// end
 
 
 

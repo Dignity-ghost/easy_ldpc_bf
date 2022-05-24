@@ -63,7 +63,8 @@ def easy_bf(rx, H, iteration):
             max_index = np.argmax(error_count)
             rx_iter[max_index] = convert_binary(rx_iter[max_index])
         else:
-            print("Decode Completeded!")
+            if iter > 0:
+                print("Decode Completeded!")
             break
     
     return rx_iter
@@ -82,12 +83,13 @@ def easy_osmlgd(rx, H, iteration):
             print("Iteration", iter+1)
             for row in range(N):
                 error_count = H[:,row][qij>0].sum()
-                check_count = (H[:,row]*qij).sum()
+                check_count = H[:,row].sum()
                 check_count = (check_count >> 1)
-                if error_count >= check_count:
+                if error_count > check_count:
                     rx_iter[row] = convert_binary(rx_iter[row])
         else:
-            print("Decode Completeded!")
+            if iter > 0:
+                print("Decode Completeded!")
             break
     
     return rx_iter

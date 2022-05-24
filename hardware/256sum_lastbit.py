@@ -23,9 +23,9 @@ for i in range(128):
     if i > 0 and i % 8 ==0:
         program += '\n                          '
     if i < 127:
-        program += 'row_sum_' + str(127-i) + '[0], '
+        program += 'row_sum_' + str(i) + '[0], '
     else:
-        program += 'row_sum_' + str(127-i) + '[0];\n'
+        program += 'row_sum_' + str(i) + '[0]};\n'
 
 
 

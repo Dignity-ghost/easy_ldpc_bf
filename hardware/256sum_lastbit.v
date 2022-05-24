@@ -17,22 +17,22 @@ wire [8:0] row_sum_0, row_sum_1, row_sum_2, row_sum_3, row_sum_4, row_sum_5, row
 
 wire [127:0] row_sum_lastbit;
 
-assign row_sum_lastbit = {row_sum_127[0], row_sum_126[0], row_sum_125[0], row_sum_124[0], row_sum_123[0], row_sum_122[0], row_sum_121[0], row_sum_120[0], 
-                          row_sum_119[0], row_sum_118[0], row_sum_117[0], row_sum_116[0], row_sum_115[0], row_sum_114[0], row_sum_113[0], row_sum_112[0], 
-                          row_sum_111[0], row_sum_110[0], row_sum_109[0], row_sum_108[0], row_sum_107[0], row_sum_106[0], row_sum_105[0], row_sum_104[0], 
-                          row_sum_103[0], row_sum_102[0], row_sum_101[0], row_sum_100[0], row_sum_99[0], row_sum_98[0], row_sum_97[0], row_sum_96[0], 
-                          row_sum_95[0], row_sum_94[0], row_sum_93[0], row_sum_92[0], row_sum_91[0], row_sum_90[0], row_sum_89[0], row_sum_88[0], 
-                          row_sum_87[0], row_sum_86[0], row_sum_85[0], row_sum_84[0], row_sum_83[0], row_sum_82[0], row_sum_81[0], row_sum_80[0], 
-                          row_sum_79[0], row_sum_78[0], row_sum_77[0], row_sum_76[0], row_sum_75[0], row_sum_74[0], row_sum_73[0], row_sum_72[0], 
-                          row_sum_71[0], row_sum_70[0], row_sum_69[0], row_sum_68[0], row_sum_67[0], row_sum_66[0], row_sum_65[0], row_sum_64[0], 
-                          row_sum_63[0], row_sum_62[0], row_sum_61[0], row_sum_60[0], row_sum_59[0], row_sum_58[0], row_sum_57[0], row_sum_56[0], 
-                          row_sum_55[0], row_sum_54[0], row_sum_53[0], row_sum_52[0], row_sum_51[0], row_sum_50[0], row_sum_49[0], row_sum_48[0], 
-                          row_sum_47[0], row_sum_46[0], row_sum_45[0], row_sum_44[0], row_sum_43[0], row_sum_42[0], row_sum_41[0], row_sum_40[0], 
-                          row_sum_39[0], row_sum_38[0], row_sum_37[0], row_sum_36[0], row_sum_35[0], row_sum_34[0], row_sum_33[0], row_sum_32[0], 
-                          row_sum_31[0], row_sum_30[0], row_sum_29[0], row_sum_28[0], row_sum_27[0], row_sum_26[0], row_sum_25[0], row_sum_24[0], 
-                          row_sum_23[0], row_sum_22[0], row_sum_21[0], row_sum_20[0], row_sum_19[0], row_sum_18[0], row_sum_17[0], row_sum_16[0], 
-                          row_sum_15[0], row_sum_14[0], row_sum_13[0], row_sum_12[0], row_sum_11[0], row_sum_10[0], row_sum_9[0], row_sum_8[0], 
-                          row_sum_7[0], row_sum_6[0], row_sum_5[0], row_sum_4[0], row_sum_3[0], row_sum_2[0], row_sum_1[0], row_sum_0[0];
+assign row_sum_lastbit = {row_sum_0[0], row_sum_1[0], row_sum_2[0], row_sum_3[0], row_sum_4[0], row_sum_5[0], row_sum_6[0], row_sum_7[0], 
+                          row_sum_8[0], row_sum_9[0], row_sum_10[0], row_sum_11[0], row_sum_12[0], row_sum_13[0], row_sum_14[0], row_sum_15[0], 
+                          row_sum_16[0], row_sum_17[0], row_sum_18[0], row_sum_19[0], row_sum_20[0], row_sum_21[0], row_sum_22[0], row_sum_23[0], 
+                          row_sum_24[0], row_sum_25[0], row_sum_26[0], row_sum_27[0], row_sum_28[0], row_sum_29[0], row_sum_30[0], row_sum_31[0], 
+                          row_sum_32[0], row_sum_33[0], row_sum_34[0], row_sum_35[0], row_sum_36[0], row_sum_37[0], row_sum_38[0], row_sum_39[0], 
+                          row_sum_40[0], row_sum_41[0], row_sum_42[0], row_sum_43[0], row_sum_44[0], row_sum_45[0], row_sum_46[0], row_sum_47[0], 
+                          row_sum_48[0], row_sum_49[0], row_sum_50[0], row_sum_51[0], row_sum_52[0], row_sum_53[0], row_sum_54[0], row_sum_55[0], 
+                          row_sum_56[0], row_sum_57[0], row_sum_58[0], row_sum_59[0], row_sum_60[0], row_sum_61[0], row_sum_62[0], row_sum_63[0], 
+                          row_sum_64[0], row_sum_65[0], row_sum_66[0], row_sum_67[0], row_sum_68[0], row_sum_69[0], row_sum_70[0], row_sum_71[0], 
+                          row_sum_72[0], row_sum_73[0], row_sum_74[0], row_sum_75[0], row_sum_76[0], row_sum_77[0], row_sum_78[0], row_sum_79[0], 
+                          row_sum_80[0], row_sum_81[0], row_sum_82[0], row_sum_83[0], row_sum_84[0], row_sum_85[0], row_sum_86[0], row_sum_87[0], 
+                          row_sum_88[0], row_sum_89[0], row_sum_90[0], row_sum_91[0], row_sum_92[0], row_sum_93[0], row_sum_94[0], row_sum_95[0], 
+                          row_sum_96[0], row_sum_97[0], row_sum_98[0], row_sum_99[0], row_sum_100[0], row_sum_101[0], row_sum_102[0], row_sum_103[0], 
+                          row_sum_104[0], row_sum_105[0], row_sum_106[0], row_sum_107[0], row_sum_108[0], row_sum_109[0], row_sum_110[0], row_sum_111[0], 
+                          row_sum_112[0], row_sum_113[0], row_sum_114[0], row_sum_115[0], row_sum_116[0], row_sum_117[0], row_sum_118[0], row_sum_119[0], 
+                          row_sum_120[0], row_sum_121[0], row_sum_122[0], row_sum_123[0], row_sum_124[0], row_sum_125[0], row_sum_126[0], row_sum_127[0]};
 
 
 bitsadder_256 f_check_0(dotarray[0], row_sum_0);

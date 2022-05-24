@@ -21,18 +21,18 @@ for i in range(r):
 v_file.write(program)
 v_file.close()
 
+snr = 14
 
+[r, c] = tx_array[snr].shape
 
-[r, c] = tx_array[14].shape
-
-d_name = 'test_In'
+d_name = 'test_IN'
 v_file = open(d_name + '.dat', 'w')
 
 program = ''
 
 for i in range(r):
     for j in range(c):
-        program += str(tx_array[14][i][j])
+        program += str(tx_array[snr][i][j])
     if i<(r-1):
         program += '\n'
 
@@ -40,10 +40,11 @@ v_file.write(program)
 v_file.close()
 
 it = 10
-gt_array = np.zeros_like(tx_array[14])
+gt_array = np.zeros_like(tx_array[snr])
 [r, c] = gt_array.shape
 for i in range(r):
-    gt_array[i] = de.easy_osmlgd(tx_array[14][i,:], H_array, it)
+    gt_array[i] = de.easy_osmlgd(tx_array[snr][i,:], H_array, it)
+
 
 d_name = 'test_GT'
 v_file = open(d_name + '.dat', 'w')
