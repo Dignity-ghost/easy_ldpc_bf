@@ -1,0 +1,5 @@
+read_verilog ./osmlgd_opt.v
+# hierarchy -check -top osmlgd_top
+# proc; opt; memory; opt; fsm; opt;
+synth
+clean

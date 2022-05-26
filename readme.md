@@ -43,3 +43,10 @@ test_snr.py tests three hard-decision decoding method in different SNR and save 
 
 ![synthesis](./hardware/pic/syn.jpg)
 
+/opt_hardware
+
+/H_value.py to write H_value.v to write H directly to netlist to optimize hardware resource
+
+/osmlgd_opt.v is osmlgd decoder faced to FPGA
+
+![synthesis_opt](./opt_hardware/pic/syn_opt.jpg)
