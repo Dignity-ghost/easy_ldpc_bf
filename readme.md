@@ -19,7 +19,7 @@ test_snr.py tests three hard-decision decoding method in different SNR and save 
 
 /adder/add_gen.py to generate adder1 ot adder128
 
-/adder/256bites_adder.py to generate 128bit and 256 bite serial adder
+/adder/256bites_adder.py to generate 128 bits and 256 bits serial adder
 
 /test/ tests initial instance mem in a testbench.
 
